@@ -32,11 +32,6 @@ class SubscribeTest(TestCase):
 
     def test_form_has_fields(self):
         """Form must have 4 fields"""
-        """ Saltou o baby steps do SubscriptionForm = None que gera um novo erro is_instance
-        Saltou o subscriptionform só herdado de  forms.forms que gera:
-        AssertionError: Sequences differ: ['name', 'cpf', 'email', 'phone'] != []
-
-        """
         form = self.resp.context['form']
         self.assertSequenceEqual(
             ['name', 'cpf', 'email', 'phone'], list(form.fields))
