@@ -1,10 +1,11 @@
 certifi==2018.11.29
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.1.4
+Django==2.2
 gunicorn==19.9.0
 pi==0.1.2
 psycopg2==2.7.6.1
 python-decouple==3.1
 pytz==2018.7
+sqlparse==0.3.0
 static3==0.7.0
