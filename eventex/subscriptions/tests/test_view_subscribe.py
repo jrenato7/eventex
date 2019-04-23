@@ -59,10 +59,14 @@ class SubscribePostInvalid(TestCase):
         self.resp = self.client.post('/inscricao/', data)
 
     def test_post(self):
+        """Invalid POST should not redirect."""
         self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):
-        self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
+        """Should use subscription_form.html template"""
+
+        self.assertTemplateUsed(
+            self.resp, 'subscriptions/subscription_form.html')
 
     def test_has_form(self):
         form = self.resp.context['form']
