@@ -3,6 +3,7 @@ dj-database-url==0.5.0
 dj-static==0.0.6
 Django==2.2
 django-extensions==2.1.6
+django-test-without-migrations==0.6
 gunicorn==19.9.0
 pi==0.1.2
 psycopg2==2.7.6.1
