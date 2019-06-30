@@ -59,3 +59,16 @@ class Talk(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Course(models.Model):
+    title = models.CharField('título', max_length=200)
+    start = models.TimeField('início', blank=True, null=True)
+    description = models.TextField('descrição', blank=True)
+    slots = models.IntegerField('vagas', blank=True)
+    speakers = models.ManyToManyField('Speaker')
+
+    objects = PeriodManager()
+
+    def __str__(self):
+        return self.title
