@@ -65,6 +65,8 @@ class Talk(models.Model):
 class Course(Talk):
     slots = models.IntegerField('vagas')
 
+    objects = PeriodManager()
+
     class Meta:
         verbose_name_plural = "cursos"
         verbose_name = "curso"
