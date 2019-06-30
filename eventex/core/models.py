@@ -44,7 +44,7 @@ class Contact(models.Model):
         return self.value
 
 
-class Talk(models.Model):
+class Activity(models.Model):
     title = models.CharField('título', max_length=200)
     start = models.TimeField('início', blank=True, null=True)
     description = models.TextField('descrição', blank=True)
@@ -54,6 +54,7 @@ class Talk(models.Model):
     objects = PeriodManager()
 
     class Meta:
+        abstract = True
         verbose_name_plural = 'Palestras'
         verbose_name = 'Palestra'
 
@@ -61,14 +62,13 @@ class Talk(models.Model):
         return self.title
 
 
-class Course(models.Model):
-    title = models.CharField('título', max_length=200)
-    start = models.TimeField('início', blank=True, null=True)
-    description = models.TextField('descrição', blank=True)
-    slots = models.IntegerField('vagas', blank=True)
-    speakers = models.ManyToManyField('Speaker')
+class Talk(Activity):
+    pass
 
-    objects = PeriodManager()
 
-    def __str__(self):
-        return self.title
+class Course(Activity):
+    slots = models.IntegerField('vagas')
+
+    class Meta:
+        verbose_name_plural = "cursos"
+        verbose_name = "curso"
