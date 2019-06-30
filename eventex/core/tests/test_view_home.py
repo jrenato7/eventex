@@ -4,6 +4,7 @@ from django.shortcuts import resolve_url as r
 
 class HomeTest(TestCase):
     fixtures = ['keynotes.json']
+
     def setUp(self):
         self.response = self.client.get(r("home"))
 
