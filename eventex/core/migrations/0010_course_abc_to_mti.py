@@ -12,19 +12,23 @@ def forward_course_abc_to_mti(apps, schema_editor):
     Associate the speakers from ABC to the MTI.
     Delete ABC.
     """
-    CourseAbc = apps.get_model('core', 'CourseOld')
-    CourseMti = apps.get_model('core', 'Course')
+    copy_src_to_dst(
+        apps.get_model('core', 'CourseOld'),
+        apps.get_model('core', 'Course')
+    )
 
-    for abc in CourseAbc.objects.all():
-        mti = CourseMti(
-            title=abc.title,
-            start=abc.start,
-            description=abc.description,
-            slots=abc.slots
+
+def copy_src_to_dst(Source, Destionation):
+    for src in Source.objects.all():
+        dst = Destionation(
+            title=src.title,
+            start=src.start,
+            description=src.description,
+            slots=src.slots
         )
-        mti.save()
-        mti.speakers.set(abc.speakers.all())
-        abc.delete()
+        dst.save()
+        dst.speakers.set(src.speakers.all())
+        src.delete()
 
 
 class Migration(migrations.Migration):
