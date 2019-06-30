@@ -3,6 +3,19 @@
 from django.db import migrations
 
 
+def copy_src_to_dst(Source, Destionation):
+    for src in Source.objects.all():
+        dst = Destionation(
+            title=src.title,
+            start=src.start,
+            description=src.description,
+            slots=src.slots
+        )
+        dst.save()
+        dst.speakers.set(src.speakers.all())
+        src.delete()
+
+
 def forward_course_abc_to_mti(apps, schema_editor):
     """
     ABC: Abstract based class.
@@ -19,31 +32,10 @@ def forward_course_abc_to_mti(apps, schema_editor):
 
 
 def backward_course_abc_to_mti(apps, schema_editor):
-    """
-    ABC: Abstract based class.
-    MTI: Multi table inheritance.
-    For each ABC, create an instance of MTI with all attributes.
-    Save MTI.
-    Associate the speakers from ABC to the MTI.
-    Delete ABC.
-    """
     copy_src_to_dst(
         apps.get_model('core', 'Course'),
         apps.get_model('core', 'CourseOld')
     )
-
-
-def copy_src_to_dst(Source, Destionation):
-    for src in Source.objects.all():
-        dst = Destionation(
-            title=src.title,
-            start=src.start,
-            description=src.description,
-            slots=src.slots
-        )
-        dst.save()
-        dst.speakers.set(src.speakers.all())
-        src.delete()
 
 
 class Migration(migrations.Migration):
@@ -53,5 +45,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(forward_course_abc_to_mti),
+        migrations.RunPython(
+            forward_course_abc_to_mti,
+            backward_course_abc_to_mti),
     ]

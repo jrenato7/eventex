@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from eventex.core.models import Talk, CourseOld, Course
+from eventex.core.models import Talk, Course, Course
 
 from eventex.core.manager import PeriodManager
 
@@ -42,6 +42,9 @@ class TalkModelTest(TestCase):
     def test_str(self):
         self.assertEqual("Título da Palestra", str(self.talk))
 
+    def test_ordering(self):
+        self.assertEqual(['start'], Talk._meta.ordering)
+
 
 class PeriodManagerTest(TestCase):
     def setUp(self):
@@ -60,34 +63,6 @@ class PeriodManagerTest(TestCase):
         qs = Talk.objects.at_afternoon()
         expected = ['AfternoonTalk']
         self.assertQuerysetEqual(qs, expected, lambda o: o.title)
-
-
-class CourseOldModelTest(TestCase):
-    def setUp(self):
-        self.course = CourseOld.objects.create(
-            title='Título do curso',
-            start='09:00',
-            description='Descrição do curso.',
-            slots=20
-        )
-
-    def test_create(self):
-        self.assertTrue(CourseOld.objects.exists())
-
-    def test_speaker(self):
-        """Course has many speakers and vice-versa"""
-        self.course.speakers.create(
-            name='José Renato',
-            slug='jose-renato',
-            website='http://joserenato.net'
-        )
-        self.assertEqual(1, self.course.speakers.count())
-
-    def test_str(self):
-        self.assertEqual(str(self.course), 'Título do curso')
-
-    def test_manager(self):
-        self.assertIsInstance(CourseOld.objects, PeriodManager)
 
 
 class CourseModelTest(TestCase):
@@ -115,4 +90,7 @@ class CourseModelTest(TestCase):
         self.assertEqual(str(self.course), 'Título do curso')
 
     def test_manager(self):
-        self.assertIsInstance(CourseOld.objects, PeriodManager)
+        self.assertIsInstance(Course.objects, PeriodManager)
+
+    def test_ordering(self):
+        self.assertEqual(['start'], Course._meta.ordering)
